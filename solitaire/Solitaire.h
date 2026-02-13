@@ -1,37 +1,20 @@
-#ifndef SOLITAIRESTACK_H
-#define SOLITAIRESTACK_H
+#ifndef SOLITAIRE_H
+#define SOLITAIRE_H
 
 #include"Card.h"
 
 class Solitaire {
 	private:
-		struct Node {
-			Card data;
-			Node* next;
-		};
-		Node* top;
-	public:
+		// initialize 52 card deck
 		Card deck[52];
-
-		// constructor
+	public:
 		Solitaire();
 
-		// stack functions
-		bool isFull();
-		bool isEmpty();
-		void push(const Card& item);
-		void pop();
-		Card peek();
-
 		// deck/card functions
-		void createDeck();
-		void printCards();
+		void displayCards();
 		int randomInt(int low, int high);
 		void swapCards(Card& a, Card& b);
 		void shuffleDeck();
-
-		// destructor
-		~Solitaire();
 };
 
 #endif

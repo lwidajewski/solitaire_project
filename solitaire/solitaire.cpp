@@ -5,91 +5,39 @@
 
 using namespace std;
 
-// ------------------- Related Stack Functions --------------------------
-
-Solitaire::Solitaire() {
-	Node* top = nullptr;
-	int deckSize = 52;
-};
-
-// check if stack is full -> maybe not needed for this but it is here anyway
-bool Solitaire::isFull() {
-	Node* temp;
-	try {
-		temp = new Node;
-		delete temp;
-		return false;
-	}
-	catch (bad_alloc) {
-		return true;
-	};
-};
-
-// check if stack is empty
-bool Solitaire::isEmpty() {
-	if (top == nullptr) {
-		return true;
-	}
-	else {
-		return false;
-	};
-};
-
-void Solitaire::push(const Card& item) {
-	if (isFull()) {
-		throw bad_alloc();
-	}
-	else {
-		Node* current = new Node;
-		// insert card into the stack
-		current->data = item;
-		current->next = top;
-		top = current;
-	};
-};
-
-void Solitaire::pop() {
-	if (isEmpty()) {
-		throw runtime_error("Stack is empty, cannot pop");
-		return;
-	}
-	else {
-		Node* temp = top;
-		top = top->next;
-		delete temp;
-	};
-};
-
-Card Solitaire::peek() {
-	if (isEmpty()) {
-		throw runtime_error("Stack is empty, cannot peek");
-	}
-	else {
-		return top->data;
-	};
-};
-
-Solitaire::~Solitaire() {
-
-};
-
-// ------------------- Card Related Functions ---------------------------
+// ------------------- Solitaire Related Functions ---------------------------
 
 // create the 52 card deck
-void Solitaire::createDeck() {
+Solitaire::Solitaire() {
+	char suits[] = { 'S', 'H', 'C', 'D' };
+	int index = 0;
 
+	for (int i = 0; i < 4; i++) {
+		for (int j = 1; j <= 13; j++) {
+			deck[index++] = Card(j, suits[i]);
+		};
+	};
 };
 
-// prints the 52 card deck
-void Solitaire::printCards() {
 
+// display the 52 card deck
+void Solitaire::displayCards() {
+	cout << "Deck: " << endl;
+	for (int i = 0; i < 52; i++) {
+		cout << deck[i].rank << deck[i].suit << " ";
+
+		if ((i + 1) % 13 == 0) {
+			cout << endl;
+		};
+	};
 };
 
+// gets a random number using rand() | Additionally, rand() uses the seed from srand() declared in main.cpp
 int Solitaire::randomInt(int low, int high) {
 	return low + (rand() % (high - low + 1));
 };
 
-// swaps 2 cards in the 52 card deck - for shuffling purposes
+// swaps 2 cards in the 52 card deck - for shuffling purposes (see shuffleDeck() below this function)
 void Solitaire::swapCards(Card& a, Card& b) {
 	Card temp = a;
 	a = b;
@@ -98,8 +46,6 @@ void Solitaire::swapCards(Card& a, Card& b) {
 
 // shuffles the 52 card deck
 void Solitaire::shuffleDeck() {
-	srand(static_cast<unsigned int>(time(nullptr)));
-
 	for (int i = 0; i < 52; i++) {
 		int j = randomInt(i, 51);
 		swapCards(deck[i], deck[j]);
