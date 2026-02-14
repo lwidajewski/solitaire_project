@@ -21,6 +21,7 @@ class Stack {
 		void push(const Card& item);
 		void pop();
 		Card peek();
+		int size();
 
 		// destructor
 		~Stack();

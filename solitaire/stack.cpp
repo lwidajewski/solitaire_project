@@ -7,7 +7,7 @@ using namespace std;
 // ------------------- Related Stack Functions --------------------------
 
 Stack::Stack() {
-	Node* top = nullptr;
+	top = nullptr;
 	int deckSize = 52;
 };
 
@@ -69,6 +69,16 @@ Card Stack::peek() {
 	else {
 		return top->data;
 	};
+};
+
+int Stack::size() {
+	int size = 0;
+	Node* current = top;
+	while (current != nullptr) {
+		current = current->next;
+		size++;
+	};
+	return size;
 };
 
 // destructor
