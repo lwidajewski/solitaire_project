@@ -1,4 +1,4 @@
-#include <iomanip>
+//#include <iomanip>
 #include <iostream>
 #include <ctime>
 
@@ -16,6 +16,11 @@ int main() {
 	game.shuffleDeck();
 	cout << "\nShuffled ";
 	game.displayCards();
+
+	cout << "\nFinn and Leo's Solitaire Game - Free Cell" << endl;
+	cout << "-----------------------------------------------------------------------" << endl;
+
+	game.dealCards();
 
 	return 0;
 };
