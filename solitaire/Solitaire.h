@@ -11,7 +11,7 @@ class Solitaire {
 
 		Stack tableau[8];
 		Stack foundation[4];
-		Stack openCell[4];
+		Stack freeCell[4];
 	public:
 		Solitaire();
 
@@ -21,23 +21,24 @@ class Solitaire {
 		void swapCards(Card& a, Card& b);
 		void shuffleDeck();
 		void dealCards();
-		void displayTableau();
+
+		// gameplay functions
+		void displayBoard();
 		void gamePlay();
 
 
-		// moving card functions
-		 
+		// checking for legal card moves functions
 		// tableau moves
-		bool checkTableauToTableauMove(Card& movedCard, Card& destination);
-
+		bool checkTableauToTableauMove(const Card& movedCard, const Card& destination);
 		// free cell moves
-		bool checkFreeCellToTableau(Card& movedCard, Stack& tableau);
-
+		bool checkFreeCellToTableau(const Card& movedCard, const Stack& tableau);
 		// move to foundation (from either free cell or tableau)
-		bool checkMoveToFoundation(Card& movedCard, Stack& foundation);
-
+		bool checkMoveToFoundation(const Card& movedCard, const Stack& foundation);
 		// move to empty tableau or free cell
-		bool checkMoveToEmptyStack(Stack& stack);
+		bool checkMoveToEmptyStack(const Stack& stack);
+
+		// uses the legal move checks and process the move if it was legal
+		bool moveCard(char whereType, int whereIndex, char destinationType, int destinationIndex);
 };
 
 #endif

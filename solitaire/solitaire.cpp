@@ -76,10 +76,10 @@ void Solitaire::dealCards() {
 		};
 	};
 	// display the tableau's
-	displayTableau();
+	displayBoard();
 };
 
-void Solitaire::displayTableau() {
+void Solitaire::displayBoard() {
 	int maxHeight = 0;
 	const int WIDTH = 12;
 
@@ -145,7 +145,7 @@ void Solitaire::displayTableau() {
 };
 
 // checks moving a card to another tableau from a tableau
-bool Solitaire::checkTableauToTableauMove(Card& movedCard, Card& destination) {
+bool Solitaire::checkTableauToTableauMove(const Card& movedCard, const Card& destination) {
 	if (movedCard.isRed() == destination.isRed()) {
 		return false;
 	}
@@ -158,7 +158,7 @@ bool Solitaire::checkTableauToTableauMove(Card& movedCard, Card& destination) {
 };
 
 // checks if a card can be moved to a tableau from a free cell
-bool Solitaire::checkFreeCellToTableau(Card& movedCard, Stack& tableau) {
+bool Solitaire::checkFreeCellToTableau(const Card& movedCard, const Stack& tableau) {
 	if (tableau.isEmpty()) {
 		return true;
 	}
@@ -174,7 +174,7 @@ bool Solitaire::checkFreeCellToTableau(Card& movedCard, Stack& tableau) {
 };
 
 // checks if a card can be moved to the foundation
-bool Solitaire::checkMoveToFoundation(Card& movedCard, Stack& foundation) {
+bool Solitaire::checkMoveToFoundation(const Card& movedCard, const Stack& foundation) {
 	if (foundation.isEmpty()) {
 		if (movedCard.rank == 1) {
 			return true;
@@ -195,12 +195,91 @@ bool Solitaire::checkMoveToFoundation(Card& movedCard, Stack& foundation) {
 };
 
 // checks if a tableau is empty to move a card from a free cell or tableau
-bool Solitaire::checkMoveToEmptyStack(Stack& stack) {
+bool Solitaire::checkMoveToEmptyStack(const Stack& stack) {
 	if (stack.isEmpty()) {
 		return true;
 	}
 	else {
 		return false;
+	};
+};
+
+bool Solitaire::moveCard(char whereType, int whereIndex, char destinationType, int destinationIndex) {
+	Card movedCard;
+
+	// user told us earlier what to move from where -- use that here
+	// T = Tableau | C = Free cell | None for foundation - moving from foundation is illegal in this solitiare version
+	if (whereType == 'T') {
+		if (tableau[whereIndex].isEmpty()) {
+			return false; // no card to move
+		}
+		else {
+			movedCard = tableau[whereIndex].peek(); // card to move
+		};
+	}
+	else if (whereType == 'C') {
+		if (freeCell[whereIndex].isEmpty()) {
+			return false; // no card to move
+		}
+		else {
+			movedCard = freeCell[whereIndex].peek(); // card to move
+		};
+	}
+	else {
+		return false; // could not find card -- user input was most likely wrong
+	};
+
+	bool legalMove = false;
+
+	// check for tableau legal moves
+	if (destinationType == 'T') {
+		// check for empty tableau - always legal to move if moving 1 card
+		if (tableau[destinationIndex].isEmpty()) {
+			legalMove = checkMoveToEmptyStack(tableau[destinationIndex]);
+		}
+		else {
+			legalMove = checkTableauToTableauMove(movedCard, tableau[destinationIndex].peek());
+		};
+	}
+	// check for foundation legal moves
+	else if (destinationType == 'F') {
+		legalMove = checkMoveToFoundation(movedCard, foundation[destinationIndex]);
+	}
+	// check for free cell legal moves
+	else if (destinationType == 'C') {
+		legalMove = checkMoveToEmptyStack(freeCell[destinationIndex]);
+	}
+	// destination inputted wrong
+	else {
+		return false;
+	};
+
+	// check if move was legal
+	if (!legalMove) {
+		return false;
+	}
+	else {
+		// move the card since move was legal
+		// remove card from where we started
+		if (whereType == 'T') {
+			tableau[whereIndex].pop();
+		}
+		else if (whereType == 'C') {
+			freeCell[whereIndex].pop();
+		}
+
+		// add card into destination stack
+		if (whereType == 'T') { // tableau
+			tableau[destinationIndex].push(movedCard);
+		}
+		else if (whereType == 'C') { // free cell
+			freeCell[destinationIndex].push(movedCard);
+		}
+		else if (whereType == 'F') { // foundation
+			foundation[destinationIndex].push(movedCard);
+		};
+
+		return true; // card was moved
 	};
 };
 

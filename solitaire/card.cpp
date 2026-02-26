@@ -10,7 +10,7 @@ Card::Card(int j, char s) {
 	suit = s;
 };
 
-bool Card::isRed() {
+bool Card::isRed() const {
 	if (suit == 'H' || suit == 'D') {
 		return true;
 	}
