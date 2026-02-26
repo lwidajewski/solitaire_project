@@ -36,16 +36,12 @@ bool Stack::isEmpty() {
 
 // add to the top of the stack
 void Stack::push(const Card& item) {
-	if (isFull()) {
-		throw bad_alloc();
-	}
-	else {
-		Node* current = new Node;
-		// insert card into the stack
-		current->data = item;
-		current->next = top;
-		top = current;
-	};
+	sizenum++;
+	Node* current = new Node;
+	// insert card into the stack
+	current->data = item;
+	current->next = top;
+	top = current;
 };
 
 // delete the top of the stack
@@ -55,6 +51,7 @@ void Stack::pop() {
 		return;
 	}
 	else {
+		sizenum--;
 		Node* temp = top;
 		top = top->next;
 		delete temp;
@@ -72,13 +69,7 @@ Card Stack::peek() {
 };
 
 int Stack::size() {
-	int size = 0;
-	Node* current = top;
-	while (current != nullptr) {
-		current = current->next;
-		size++;
-	};
-	return size;
+	return sizenum;
 };
 
 // destructor

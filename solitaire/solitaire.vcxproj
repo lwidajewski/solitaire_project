@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="card.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="solitaire.cpp" />
     <ClCompile Include="stack.cpp" />
