@@ -18,11 +18,11 @@ class Stack {
 
 		// stack functions
 		bool isFull();
-		bool isEmpty();
+		bool isEmpty() const;
 		void push(const Card& item);
 		void pop();
-		Card peek();
-		int size();
+		Card peek() const;
+		int size() const;
 
 		// destructor
 		~Stack();

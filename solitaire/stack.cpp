@@ -25,7 +25,7 @@ bool Stack::isFull() {
 };
 
 // check if stack is empty
-bool Stack::isEmpty() {
+bool Stack::isEmpty() const {
 	if (top == nullptr) {
 		return true;
 	}
@@ -59,7 +59,7 @@ void Stack::pop() {
 };
 
 // look at the top of the stack
-Card Stack::peek() {
+Card Stack::peek() const {
 	if (isEmpty()) {
 		throw runtime_error("Stack is empty, cannot peek");
 	}
@@ -68,7 +68,7 @@ Card Stack::peek() {
 	};
 };
 
-int Stack::size() {
+int Stack::size() const {
 	return sizenum;
 };
 
