@@ -143,3 +143,67 @@ void Solitaire::displayTableau() {
 		cout << endl;
 	};
 };
+
+// checks moving a card to another tableau from a tableau
+bool Solitaire::checkTableauToTableauMove(Card& movedCard, Card& destination) {
+	if (movedCard.isRed() == destination.isRed()) {
+		return false;
+	}
+	else if (movedCard.rank != destination.rank - 1) {
+		return false;
+	}
+	else {
+		return true;
+	}
+};
+
+// checks if a card can be moved to a tableau from a free cell
+bool Solitaire::checkFreeCellToTableau(Card& movedCard, Stack& tableau) {
+	if (tableau.isEmpty()) {
+		return true;
+	}
+	else {
+		Card top = tableau.peek();
+		if (movedCard.isRed() != top.isRed() && movedCard.rank == top.rank - 1) {
+			return true;
+		}
+		else {
+			return false;
+		};
+	};
+};
+
+// checks if a card can be moved to the foundation
+bool Solitaire::checkMoveToFoundation(Card& movedCard, Stack& foundation) {
+	if (foundation.isEmpty()) {
+		if (movedCard.rank == 1) {
+			return true;
+		}
+		else {
+			return false;
+		};
+	};
+
+	Card top = foundation.peek();
+
+	if (movedCard.suit == top.suit && movedCard.rank == top.rank + 1) {
+		return true;
+	}
+	else {
+		return false;
+	};
+};
+
+// checks if a tableau is empty to move a card from a free cell or tableau
+bool Solitaire::checkMoveToEmptyStack(Stack& stack) {
+	if (stack.isEmpty()) {
+		return true;
+	}
+	else {
+		return false;
+	};
+};
+
+void Solitaire::gamePlay() {
+
+};
