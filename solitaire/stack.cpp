@@ -8,7 +8,7 @@ using namespace std;
 
 Stack::Stack() {
 	top = nullptr;
-	int deckSize = 52;
+	sizenum = 0;
 };
 
 // check if stack is full -> maybe not needed for this but it is here anyway

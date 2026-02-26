@@ -22,6 +22,22 @@ class Solitaire {
 		void shuffleDeck();
 		void dealCards();
 		void displayTableau();
+		void gamePlay();
+
+
+		// moving card functions
+		 
+		// tableau moves
+		bool checkTableauToTableauMove(Card& movedCard, Card& destination);
+
+		// free cell moves
+		bool checkFreeCellToTableau(Card& movedCard, Stack& tableau);
+
+		// move to foundation (from either free cell or tableau)
+		bool checkMoveToFoundation(Card& movedCard, Stack& foundation);
+
+		// move to empty tableau or free cell
+		bool checkMoveToEmptyStack(Stack& stack);
 };
 
 #endif
