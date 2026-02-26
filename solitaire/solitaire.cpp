@@ -103,7 +103,7 @@ void Solitaire::displayTableau() {
 	// print each tableau in rows
 	for (int row = 1; row <= maxHeight; row++) {
 		for (int col = 0; col < 8; col++) {
-			
+
 			// go to the specific row we are printing
 			int colHeight = tableau[col].size();
 			if (row <= colHeight) {
