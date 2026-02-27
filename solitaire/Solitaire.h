@@ -28,6 +28,7 @@ class Solitaire {
 		// gameplay functions
 		void displayBoard();
 		void gamePlay();
+		bool checkWin();
 
 
 		// checking for legal card moves functions
