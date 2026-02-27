@@ -389,6 +389,7 @@ void Solitaire::gamePlay() {
 			while (destinationType != 'T' && destinationType != 'F' && destinationType != 'C') {
 				cout << "Invalid input. Enter T for Tableau, F for Foundation, or C for Free Cell: ";
 				cin >> destinationType;
+				destinationType = toupper(destinationType);
 			};
 
 			if (destinationType == 'T') { // tableau
