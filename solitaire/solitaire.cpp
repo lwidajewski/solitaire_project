@@ -1,6 +1,6 @@
-#include<iostream>
-#include<cstdlib> // for rand()
-#include<string>
+#include <iostream>
+#include <cstdlib> // for rand()
+#include <string>
 #include <iomanip>
 
 #include "Solitaire.h"
@@ -75,17 +75,62 @@ void Solitaire::dealCards() {
 			tableau[i].push(deck[index++]);
 		};
 	};
-	// display the tableau's
+	// display the board
 	displayBoard();
 };
 
+// converts card details into a string for printing purposes
+string Solitaire::cardToString(const Card& c) {
+	string r;
+
+	if (c.rank == 1) r = "A";
+	else if (c.rank == 11) r = "J";
+	else if (c.rank == 12) r = "Q";
+	else if (c.rank == 13) r = "K";
+	else r = to_string(c.rank);
+
+	return r + c.suit;
+};
+
+// print out free cells, foundations, and tableau's
 void Solitaire::displayBoard() {
-	int maxHeight = 0;
 	const int WIDTH = 12;
 
+	// FREE CELLS
+	cout << left << setw(WIDTH) << "Free Cells";
+	for (int i = 0; i < 4; i++) {
+		string cardFreeCell;
+		if (freeCell[i].isEmpty()) {
+			cardFreeCell = "-";
+		}
+		else {
+			cardFreeCell = cardToString(freeCell[i].peek());
+		};
+		cout << left << setw(WIDTH) << cardFreeCell;
+	};
+
+
+	// FOUNDATIONS
+	cout << left << setw(WIDTH) << "Foundations";
+	for (int i = 0; i < 4; i++) {
+		string cardFoundation;
+		if (foundation[i].isEmpty()) {
+			cardFoundation = "-";
+		}
+		else {
+			cardFoundation = cardToString(foundation[i].peek());
+		};
+		cout << left << setw(WIDTH) << cardFoundation;
+	};
+
+	cout << endl;
+	cout << "----------------------------------------------------------------------------------------------------------------" << endl;
+
+	// TABLEAU's
 	// get max height of the stack(s)
 	// needed in case someone adds onto a stack so we need to know how many rows to print
 	// e.g. we intially had 7 rows, user added a card to a stack with 7, now we need 8 rows
+	int maxHeight = 0;
 	for (int col = 0; col < 8; col++) {
 		int height = tableau[col].size();
 		if (height > maxHeight) {
@@ -124,16 +169,7 @@ void Solitaire::displayBoard() {
 					tempStack.pop();
 				};
 
-				// print card details
-				string r;
-
-				if (c.rank == 1) r = "A";
-				else if (c.rank == 11) r = "J";
-				else if (c.rank == 12) r = "Q";
-				else if (c.rank == 13) r = "K";
-				else r = to_string(c.rank);
-
-				cout << left << setw(WIDTH) << (r + c.suit);
+				cout << left << setw(WIDTH) << cardToString(c);
 			}
 			else {
 				// print an empty string if it was an empty row
@@ -142,6 +178,7 @@ void Solitaire::displayBoard() {
 		};
 		cout << endl;
 	};
+	cout << "----------------------------------------------------------------------------------------------------------------" << endl;
 };
 
 // checks moving a card to another tableau from a tableau
@@ -194,7 +231,7 @@ bool Solitaire::checkMoveToFoundation(const Card& movedCard, const Stack& founda
 	};
 };
 
-// checks if a tableau is empty to move a card from a free cell or tableau
+// checks if a tableau or free cell is empty to move a card from a free cell or tableau
 bool Solitaire::checkMoveToEmptyStack(const Stack& stack) {
 	if (stack.isEmpty()) {
 		return true;
@@ -269,13 +306,13 @@ bool Solitaire::moveCard(char whereType, int whereIndex, char destinationType, i
 		}
 
 		// add card into destination stack
-		if (whereType == 'T') { // tableau
+		if (destinationType == 'T') { // tableau
 			tableau[destinationIndex].push(movedCard);
 		}
-		else if (whereType == 'C') { // free cell
+		else if (destinationType == 'C') { // free cell
 			freeCell[destinationIndex].push(movedCard);
 		}
-		else if (whereType == 'F') { // foundation
+		else if (destinationType == 'F') { // foundation
 			foundation[destinationIndex].push(movedCard);
 		};
 
