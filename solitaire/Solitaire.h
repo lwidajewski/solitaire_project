@@ -1,8 +1,10 @@
 #ifndef SOLITAIRE_H
 #define SOLITAIRE_H
 
-#include"Card.h"
-#include"Stack.h"
+#include <string>
+
+#include "Card.h"
+#include "Stack.h"
 
 class Solitaire {
 	private:
@@ -21,6 +23,7 @@ class Solitaire {
 		void swapCards(Card& a, Card& b);
 		void shuffleDeck();
 		void dealCards();
+		std::string cardToString(const Card& c);
 
 		// gameplay functions
 		void displayBoard();
