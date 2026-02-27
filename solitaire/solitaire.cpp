@@ -76,7 +76,7 @@ void Solitaire::dealCards() {
 		};
 	};
 	// display the board
-	displayBoard();
+	//displayBoard();
 };
 
 // converts card details into a string for printing purposes
@@ -101,12 +101,12 @@ void Solitaire::displayBoard() {
 	for (int i = 0; i < 4; i++) {
 		string cardFreeCell;
 		if (freeCell[i].isEmpty()) {
-			cardFreeCell = "-";
+			cardFreeCell = "-"; // sets it to '-' if there was no card to display
 		}
 		else {
-			cardFreeCell = cardToString(freeCell[i].peek());
+			cardFreeCell = cardToString(freeCell[i].peek()); // get card
 		};
-		cout << left << setw(WIDTH) << cardFreeCell;
+		cout << left << setw(WIDTH) << cardFreeCell; // display card
 	};
 
 
@@ -115,12 +115,12 @@ void Solitaire::displayBoard() {
 	for (int i = 0; i < 4; i++) {
 		string cardFoundation;
 		if (foundation[i].isEmpty()) {
-			cardFoundation = "-";
+			cardFoundation = "-"; // sets it to '-' if there was no card to display
 		}
 		else {
-			cardFoundation = cardToString(foundation[i].peek());
+			cardFoundation = cardToString(foundation[i].peek()); // get card
 		};
-		cout << left << setw(WIDTH) << cardFoundation;
+		cout << left << setw(WIDTH) << cardFoundation; // display card
 	};
 
 	cout << endl;
@@ -320,6 +320,122 @@ bool Solitaire::moveCard(char whereType, int whereIndex, char destinationType, i
 	};
 };
 
-void Solitaire::gamePlay() {
+bool Solitaire::checkWin() {
+	for (int i = 0; i < 4; i++) {
+		if (foundation[i].size() != 13) {
+			return false;
+		};
+	};
+	return true;
+};
 
+void Solitaire::gamePlay() {
+	// C = Free cell | T = Tableau | F = Foundation
+	char whereType;
+	int whereIndex;
+	char destinationType;
+	int destinationIndex;
+
+	while (true) {
+		// displays the game board (will also display the updated version if a card was moved)
+		displayBoard();
+
+		//
+		// get which pile or free cell they want to move a card from
+		//
+		cout << "Where do you want to move a card from (T - Tableau | C - Free Cell | Q - Quit)?" << endl;
+		cin >> whereType;
+		whereType = toupper(whereType);
+
+		if (whereType == 'Q') {
+			cout << "Thanks for playing!" << endl;
+			break;
+		}
+		else {
+			while (whereType != 'T' && whereType != 'C') { // input validation
+				cout << "Invalid input. Enter T for Tableau or C for Free Cell: ";
+				cin >> whereType;
+				whereType = toupper(whereType);
+			};
+
+			if (whereType == 'T') { // tableau
+				cout << "From which pile (1-8)?" << endl;
+				cin >> whereIndex;
+				while (cin.fail() || whereIndex > 8 || whereIndex < 1) { // input validation
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid input. Enter an integer from 1-8: ";
+					cin >> whereIndex;
+				}
+			}
+			else { // free cell
+				cout << "From which free cell (1-4 from left to right)?" << endl;
+				cin >> whereIndex;
+				while (cin.fail() || whereIndex > 4 || whereIndex < 1) { // input validation
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid input. Enter an integer from 1-4: ";
+					cin >> whereIndex;
+				}
+			};
+
+			//
+			// get where they want to move the card to
+			//
+			cout << "Move the card where (T - Tableau | F - Foundation | C - Free Cell" << endl;
+			cin >> destinationType;
+			destinationType = toupper(destinationType);
+
+			while (destinationType != 'T' && destinationType != 'F' && destinationType != 'C') {
+				cout << "Invalid input. Enter T for Tableau, F for Foundation, or C for Free Cell: ";
+				cin >> destinationType;
+			};
+
+			if (destinationType == 'T') { // tableau
+				cout << "Move the card to which pile (1-8)?" << endl;
+				cin >> destinationIndex;
+				while (cin.fail() || destinationIndex > 8 || destinationIndex < 1) { // input validation
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid input. Enter an integer from 1-8: ";
+					cin >> destinationIndex;
+				}
+			}
+			else if (destinationType == 'F') { // foundation
+				cout << "Move the card to which foundation (1-4 from left to right)" << endl;
+				cin >> destinationIndex;
+				while (cin.fail() || destinationIndex > 4 || destinationIndex < 1) { // input validation
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid input. Enter an integer from 1-4: ";
+					cin >> destinationIndex;
+				}
+			}
+			else { // free cell
+				cout << "Move the card to which free cell (1-4 from left to right)" << endl;
+				cin >> destinationIndex;
+				while (cin.fail() || destinationIndex > 4 || destinationIndex < 1) { // input validation
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid input. Enter an integer from 1-4: ";
+					cin >> destinationIndex;
+				};
+			};
+		};
+
+		//
+		// check for legal move
+		//
+		if (moveCard(whereType, whereIndex - 1, destinationType, destinationIndex - 1)) {
+			cout << "Move successful!" << endl;
+			if (checkWin()) {
+				displayBoard();
+				cout << "Congrats! You have won!" << endl;
+				break;
+			};
+		}
+		else {
+			cout << "Illegal move!" << endl;
+		};
+	};
 };
