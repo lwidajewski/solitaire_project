@@ -320,6 +320,7 @@ bool Solitaire::moveCard(char whereType, int whereIndex, char destinationType, i
 	};
 };
 
+// checks for game win by checking the number of cards in each foundation
 bool Solitaire::checkWin() {
 	for (int i = 0; i < 4; i++) {
 		if (foundation[i].size() != 13) {
@@ -329,6 +330,7 @@ bool Solitaire::checkWin() {
 	return true;
 };
 
+// starts the game loop
 void Solitaire::gamePlay() {
 	// C = Free cell | T = Tableau | F = Foundation
 	char whereType;
@@ -386,7 +388,7 @@ void Solitaire::gamePlay() {
 			cin >> destinationType;
 			destinationType = toupper(destinationType);
 
-			while (destinationType != 'T' && destinationType != 'F' && destinationType != 'C') {
+			while (destinationType != 'T' && destinationType != 'F' && destinationType != 'C') { // input validation
 				cout << "Invalid input. Enter T for Tableau, F for Foundation, or C for Free Cell: ";
 				cin >> destinationType;
 				destinationType = toupper(destinationType);
@@ -429,7 +431,7 @@ void Solitaire::gamePlay() {
 		//
 		if (moveCard(whereType, whereIndex - 1, destinationType, destinationIndex - 1)) {
 			cout << "Move successful!" << endl;
-			if (checkWin()) {
+			if (checkWin()) { // check for game win
 				displayBoard();
 				cout << "Congrats! You have won!" << endl;
 				break;
